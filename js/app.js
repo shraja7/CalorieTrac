@@ -58,6 +58,21 @@ _displayCaloriesRemaining() {
     const caloriesRemainingEl = document.querySelector('#calories-remaining');
     const remaining = this._calorieLimit - this._totalCalories;
     caloriesRemainingEl.innerHTML = remaining;
+    const progressEl = document.querySelector('#calorie-progress');
+
+    if(remaining < 0) {
+        caloriesRemainingEl.parentElement.parentElement.classList.remove('bg-light');
+        caloriesRemainingEl.parentElement.parentElement.classList.add('bg-danger');
+        //make progress bar red 
+        progressEl.classList.remove('bg-success');
+        progressEl.classList.add('bg-danger');
+    }else {
+        caloriesRemainingEl.parentElement.parentElement.classList.remove('bg-danger');
+        caloriesRemainingEl.parentElement.parentElement.classList.add('bg-light');
+        //progress bar green
+        progressEl.classList.remove('bg-danger');
+        progressEl.classList.add('bg-success');
+    }
 }
 _displayCaloriesProgress() {
     const progressEl = document.querySelector('#calorie-progress');
@@ -97,6 +112,13 @@ const tracker = new CalorieTracker();
 //meal instance
 const breakfast = new Meal('Breakfast', 500);
 tracker.addMeal(breakfast);
+
+const lunch = new Meal('Lunch', 600);
+tracker.addMeal(lunch);
+
+const dinner = new Meal('Dinner', 5000);
+tracker.addMeal(dinner);
+
 
 
 const run = new Workout('Morning Run', 600);
