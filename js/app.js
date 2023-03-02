@@ -65,6 +65,13 @@ class CalorieTracker {
         }
     }
 
+    reset() {
+        this._totalCalories = 0;
+        this._meals = [];
+        this._workouts = [];
+        this._render();
+    }
+
 
     //private methods//
     _displayCaloriesTotal() {
@@ -211,6 +218,9 @@ class App {
 
         document.getElementById('filter-meals').addEventListener('keyup', this._filterItems.bind(this, 'meal'));
         document.getElementById('filter-workouts').addEventListener('keyup', this._filterItems.bind(this, 'workout'));
+
+        //get reset button
+        document.getElementById('reset').addEventListener('click', this._reset.bind(this));
     }
     _newItem (type, e) {
         e.preventDefault();
@@ -267,6 +277,16 @@ class App {
             
         }
         )
+    }
+
+    _reset() {
+        if(confirm('Are you sure?')) {
+            this._tracker.reset();
+            document.getElementById('meal-items').innerHTML = '';
+            document.getElementById('workout-items').innerHTML = '';
+            document.getElementById('filter-meals').value = '';
+            document.getElementById('filter-workouts').value = '';
+        }
     }
 
 }
