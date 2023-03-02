@@ -279,24 +279,30 @@ static saveMeal(meal) {
 class App {
     constructor() {
         this._tracker = new CalorieTracker();
-        document.getElementById('meal-form').addEventListener('submit', this._newItem.bind(this, 'meal'));
-
-        document.getElementById('workout-form').addEventListener('submit', this._newItem.bind(this, 'workout'));
-
-        document.getElementById('meal-items').addEventListener('click', this._removeItem.bind(this, 'meal'));
-        document.getElementById('workout-items').addEventListener('click', this._removeItem.bind(this, 'workout'));
-
-        document.getElementById('filter-meals').addEventListener('keyup', this._filterItems.bind(this, 'meal'));
-        document.getElementById('filter-workouts').addEventListener('keyup', this._filterItems.bind(this, 'workout'));
-
-        //get reset button
-        document.getElementById('reset').addEventListener('click', this._reset.bind(this));
-
-        //get limit form
-        document.getElementById('limit-form').addEventListener('submit', this._setLimit.bind(this));
-
+      this._loadEventListeners();
         this._tracker.loadItems();
     }
+
+    //event listeners
+_loadEventListeners() {
+    document.getElementById('meal-form').addEventListener('submit', this._newItem.bind(this, 'meal'));
+
+    document.getElementById('workout-form').addEventListener('submit', this._newItem.bind(this, 'workout'));
+
+    document.getElementById('meal-items').addEventListener('click', this._removeItem.bind(this, 'meal'));
+    document.getElementById('workout-items').addEventListener('click', this._removeItem.bind(this, 'workout'));
+
+    document.getElementById('filter-meals').addEventListener('keyup', this._filterItems.bind(this, 'meal'));
+    document.getElementById('filter-workouts').addEventListener('keyup', this._filterItems.bind(this, 'workout'));
+
+    //get reset button
+    document.getElementById('reset').addEventListener('click', this._reset.bind(this));
+
+    //get limit form
+    document.getElementById('limit-form').addEventListener('submit', this._setLimit.bind(this));
+
+}
+
     _newItem (type, e) {
         e.preventDefault();
         const name = document.getElementById(`${type}-name`);
