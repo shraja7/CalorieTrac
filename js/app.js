@@ -20,12 +20,14 @@ class CalorieTracker {
     addMeal(meal) {
         this._meals.push(meal);
         this._totalCalories += meal.calories;
+        this._displayNewMeal(meal);
         this._render()
     }
 
     addWorkout(workout) {
         this._workouts.push(workout);
         this._totalCalories -= workout.calories;
+        this._displayNewWorkout(workout);
         this._render()
     }
 
@@ -79,6 +81,61 @@ _displayCaloriesProgress() {
     const percentage = (this._totalCalories / this._calorieLimit) * 100;
     const width = Math.min(percentage, 100)
     progressEl.style.width = `${width}%`
+}
+_displayNewMeal(meal) {
+    //element where to store/display meal
+    const mealsEl = document.querySelector('#meal-items');
+    const mealEl = document.createElement('div');
+    //add classes to meal element
+    mealEl.classList.add('row', 'my-2');
+    mealEl.setAttribute('data-id', meal.id);
+    mealEl.innerHTML = `
+    <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="mx-1">${meal.name}</h4>
+                  <div
+                    class="fs-1 bg-primary text-white text-center rounded-2 px-2 px-sm-5"
+                  >
+                    ${meal.calories}
+                  </div>
+                  <button class="delete btn btn-danger btn-sm mx-2">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+    </div>
+        
+              `;
+
+                mealsEl.appendChild(mealEl);
+
+}
+
+_displayNewWorkout(workout) {
+    //element where to store/display meal
+    const workoutEl = document.createElement('div');
+    const workoutsEl = document.querySelector('#workout-items');
+    //add classes to meal element
+    workoutEl.classList.add('row', 'my-2');
+    workoutEl.setAttribute('data-id', workout.id);
+    workoutEl.innerHTML = `
+    <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="mx-1">${workout.name}</h4>
+                  <div
+                    class="fs-1 bg-secondary text-white text-center rounded-2 px-2 px-sm-5"
+                  >
+                    ${workout.calories}
+                  </div>
+                  <button class="delete btn btn-danger btn-sm mx-2">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+    </div>
+        
+              `;
+
+                workoutsEl.appendChild(workoutEl);
+
 }
 
     //render method to display meals and workouts
