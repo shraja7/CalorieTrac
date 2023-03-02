@@ -31,6 +31,41 @@ class CalorieTracker {
         this._render()
     }
 
+    removeMeal(id) {
+        //find index of meal want to remove with id
+        const index = this._meals.findIndex(meal => meal.id === id);
+        //check it's a match
+        if(index !== -1) {
+            //remove meal from array
+            const meal = this._meals[index];
+            //subtract calories from total calories
+            this._totalCalories -= meal.calories;
+            this._meals.splice(index, 1);
+            //remove meal from UI
+            
+            //render
+            this._render();
+        }
+    }
+
+    removeWorkout(id) {
+        //find index of meal want to remove with id
+        const index = this._workouts.findIndex(workout => workout.id === id);
+        //check it's a match
+        if(index !== -1) {
+            //remove workout from array
+            const workout = this._workouts[index];
+            //subtract calories from total calories
+            this._totalCalories += workout.calories;
+            this._workouts.splice(index, 1);
+            //remove meal from UI
+            
+            //render
+            this._render();
+        }
+    }
+
+
     //private methods//
     _displayCaloriesTotal() {
         const totalCaloriesEl = document.querySelector('#calories-total');
@@ -90,7 +125,7 @@ _displayNewMeal(meal) {
     mealEl.classList.add('row', 'my-2');
     mealEl.setAttribute('data-id', meal.id);
     mealEl.innerHTML = `
-    <div class="card-body">
+    <div class="card-body ">
                 <div class="d-flex align-items-center justify-content-between">
                   <h4 class="mx-1">${meal.name}</h4>
                   <div
@@ -118,7 +153,7 @@ _displayNewWorkout(workout) {
     workoutEl.classList.add('row', 'my-2');
     workoutEl.setAttribute('data-id', workout.id);
     workoutEl.innerHTML = `
-    <div class="card-body">
+    <div class="card-body ">
                 <div class="d-flex align-items-center justify-content-between">
                   <h4 class="mx-1">${workout.name}</h4>
                   <div
@@ -170,6 +205,9 @@ class App {
         document.getElementById('meal-form').addEventListener('submit', this._newItem.bind(this, 'meal'));
 
         document.getElementById('workout-form').addEventListener('submit', this._newItem.bind(this, 'workout'));
+
+        document.getElementById('meal-items').addEventListener('click', this._removeItem.bind(this, 'meal'));
+        document.getElementById('workout-items').addEventListener('click', this._removeItem.bind(this, 'workout'));
     }
     _newItem (type, e) {
         e.preventDefault();
@@ -199,7 +237,20 @@ class App {
         });
     }
 
-    
+    _removeItem(type, e) {
+        if(e.target.classList.contains('fa-xmark') || e.target.classList.contains('delete')) {
+           
+        if(confirm('Are you sure?')){
+            //get data-id
+            const id = e.target.closest('.row').getAttribute('data-id');
+            console.log('id: ',id)
+           //reomve meal or workout using ternary
+           type === 'workout' ?  this._tracker.removeWorkout(id) : this._tracker.removeMeal(id) 
+           //remove the item from the dom
+           e.target.closest('.row').remove()
+        }
+        }
+    }
 
 }
 
